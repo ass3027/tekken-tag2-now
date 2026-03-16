@@ -1,320 +1,128 @@
+@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap');
 
 /* ─── Design tokens ───────────────────────────────────────── */
-:root {
-  --bg-deep:      #07070f;
-  --bg-panel:     #0d0d1c;
-  --bg-row:       #101020;
-  --bg-row-alt:   #0a0a14;
-  --primary:      #00c8d4;
-  --primary-dim:  #005a60;
-  --primary-glow: rgba(0, 200, 212, 0.25);
-  --secondary:       #c9a84c;
-  --secondary-light: #f0d070;
-  --error:           #c8102e;
-  --silver:       #c0c0c0;
-  --bronze:       #cd7f32;
-  --text:         #dde0f0;
-  --text-dim:     #6870a0;
-  --border:       #1e1e32;
-  --border-light: #2a2a42;
+@theme {
+  --color-bg-deep: #07070f;
+  --color-bg-panel: #0d0d1c;
+  --color-bg-row: #101020;
+  --color-bg-row-alt: #0a0a14;
+  --color-primary: #00c8d4;
+  --color-primary-dim: #005a60;
+  --color-primary-glow: rgba(0, 200, 212, 0.25);
+  --color-secondary: #c9a84c;
+  --color-secondary-light: #f0d070;
+  --color-error: #c8102e;
+  --color-silver: #c0c0c0;
+  --color-bronze: #cd7f32;
+  --color-txt: #dde0f0;
+  --color-txt-dim: #6870a0;
+  --color-border: #1e1e32;
+  --color-border-light: #2a2a42;
+  --font-sans: 'Rajdhani', sans-serif;
+  --font-display: 'Orbitron', sans-serif;
 }
 
-/* ─── Reset ───────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; }
+/* ─── Base ────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
 
-body {
-  margin: 0;
-  background: var(--bg-deep);
-  color: var(--text);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 16px;
-  line-height: 1.4;
+  body {
+    margin: 0;
+    background: var(--color-bg-deep);
+    color: var(--color-txt);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.4;
+  }
 }
 
-/* ─── App shell ───────────────────────────────────────────── */
-.app {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 16px 48px;
-}
-
-/* ─── Header ──────────────────────────────────────────────── */
-.app-header {
-  padding: 28px 0 20px;
-  margin-bottom: 4px;
-  border-bottom: 2px solid var(--primary);
-  position: relative;
-}
-
-/* gold accent under the red border */
-.app-header::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 72px;
-  height: 2px;
-  background: var(--secondary);
-}
-
-.app-header h1 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(1.05rem, 4vw, 1.8rem);
-  font-weight: 900;
-  margin: 0 0 6px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  /* metallic gold-white gradient */
-  background: linear-gradient(100deg, #fff 0%, var(--secondary) 45%, #fff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.live-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--primary);
-}
-
-.live-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--primary);
-  animation: blink 1.6s ease-in-out infinite;
-}
-
+/* ─── Animations ──────────────────────────────────────────── */
 @keyframes blink {
-  0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--primary); }
-  50%       { opacity: 0.15; box-shadow: none; }
+  0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--color-primary); }
+  50%      { opacity: 0.15; box-shadow: none; }
 }
 
-/* ─── Tab bar ─────────────────────────────────────────────── */
-.tab-bar {
-  display: flex;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  gap: 2px;
-  margin: 20px 0 0;
-  border-bottom: 1px solid var(--border-light);
-  padding-bottom: 0;
-}
+/* ─── Component classes ───────────────────────────────────── */
+@layer components {
+  /* Pseudo-elements (can't be done with @apply) */
+  .app-header::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 72px;
+    height: 2px;
+    background: var(--color-secondary);
+  }
 
-.tab-btn {
-  padding: 9px 22px;
-  background: transparent;
-  border: 1px solid transparent;
-  border-bottom: none;
-  color: var(--text-dim);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  position: relative;
-  transition: color 0.15s;
-  bottom: -1px; /* overlap the bar's border */
-}
+  .app-header h1 {
+    background: linear-gradient(100deg, #fff 0%, var(--color-secondary) 45%, #fff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
-.tab-btn:hover {
-  color: var(--text);
-}
+  .tab-btn.active::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    height: 2px;
+    background: var(--color-primary);
+  }
 
-.tab-btn.active {
-  color: var(--secondary);
-  background: var(--bg-panel);
-  border-color: var(--border-light);
-  border-bottom: 1px solid var(--bg-panel); /* visually connects to panel */
-}
+  /* Reusable layout classes */
+  .panel {
+    @apply bg-bg-panel border border-border-light border-t-0 px-5 pt-5 pb-6;
+  }
 
-/* cyan top bar on active tab */
-.tab-btn.active::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  height: 2px;
-  background: var(--primary);
-}
+  .panel-meta {
+    @apply m-0 mb-3.5 text-[0.78rem] font-semibold tracking-[0.12em] uppercase text-txt-dim;
+  }
 
-.refresh-btn {
-  margin-left: auto;
-  margin-bottom: 4px;
-  padding: 6px 18px;
-  background: transparent;
-  border: 1px solid var(--primary-dim);
-  color: var(--primary);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
-}
+  .state-msg {
+    @apply m-0 py-7 text-center text-[0.88rem] font-semibold tracking-[0.12em] uppercase text-txt-dim;
+  }
 
-.refresh-btn:hover {
-  background: var(--primary-glow);
-  border-color: var(--primary);
-  color: #fff;
-  box-shadow: 0 0 8px var(--primary-glow);
-}
+  .state-msg.error {
+    @apply text-error;
+  }
 
-/* ─── Content panel ───────────────────────────────────────── */
-.panel {
-  background: var(--bg-panel);
-  border: 1px solid var(--border-light);
-  border-top: none; /* header/tab handles the top edge */
-  padding: 20px 20px 24px;
-}
+  .tbl-th {
+    @apply bg-primary text-white font-sans text-[0.76rem] font-bold tracking-[0.14em] uppercase px-3.5 py-2 text-left whitespace-nowrap border-b-2 border-primary-dim;
+  }
 
-.panel-meta {
-  margin: 0 0 14px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
+  .tbl-row {
+    @apply border-b border-border transition-colors duration-100 even:bg-bg-row-alt hover:bg-[rgba(0,200,212,0.07)];
+  }
 
-/* ─── Tables ──────────────────────────────────────────────── */
-.table-wrap {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
+  .tbl-td {
+    @apply px-2.5 py-2 text-[0.95rem] text-txt whitespace-nowrap;
+  }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: 340px;
-}
+  .player-name {
+    @apply px-2.5 py-2 text-[0.95rem] whitespace-nowrap font-bold text-white tracking-[0.03em] max-w-[28px] overflow-hidden text-ellipsis;
+  }
 
-thead th {
-  background: var(--primary);
-  color: #fff;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 9px 14px;
-  text-align: left;
-  white-space: nowrap;
-  border-bottom: 2px solid var(--primary-dim);
-}
+  .char-td {
+    @apply text-secondary text-[0.88rem] font-semibold max-w-[70px] text-center;
+  }
 
-tbody tr {
-  border-bottom: 1px solid var(--border);
-  transition: background 0.1s;
-}
-
-tbody tr:nth-child(even) {
-  background: var(--bg-row-alt);
-}
-
-tbody tr:hover {
-  background: rgba(0, 200, 212, 0.07);
-}
-
-tbody td {
-  padding: 9px 14px;
-  font-size: 0.95rem;
-  color: var(--text);
-  white-space: nowrap;
-}
-
-/* ─── Cell variants ───────────────────────────────────────── */
-.rank-cell {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  width: 44px;
-}
-
-.rank-1 { color: var(--secondary-light); }
-.rank-2 { color: var(--silver); }
-.rank-3 { color: var(--bronze); }
-
-.player-name {
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.03em;
-}
-
-.char-name {
-  color: var(--secondary);
-  font-size: 0.88rem;
-  font-weight: 600;
-}
-
-.char-cell {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.char-portrait {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.score-cell {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.8rem;
-  color: var(--text);
-}
-
-/* ─── State messages ──────────────────────────────────────── */
-.state-msg {
-  margin: 0;
-  padding: 28px 0;
-  text-align: center;
-  font-size: 0.88rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
-
-.state-msg.error {
-  color: var(--error);
-}
-
-/* ─── Responsive ──────────────────────────────────────────── */
-@media (max-width: 600px) {
-  .app-header {
-    padding: 20px 0 16px;
+  .char-rank {
+    @apply text-[0.70rem] text-txt-dim whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px];
   }
 
   .tab-btn {
-    padding: 8px 14px;
-    font-size: 0.82rem;
+    @apply relative px-[22px] py-[9px] bg-transparent border border-transparent border-b-0 font-sans text-[0.9rem] font-bold tracking-[0.12em] uppercase cursor-pointer transition-colors duration-150 -bottom-px text-txt-dim hover:text-txt;
   }
 
-  .panel {
-    padding: 14px 12px 18px;
+  .tab-btn.active {
+    @apply text-secondary bg-bg-panel border-border-light !border-b-bg-panel;
   }
 
-  thead th,
-  tbody td {
-    padding: 7px 10px;
-    font-size: 0.82rem;
-  }
-
-  .score-cell,
-  .rank-cell {
-    font-size: 0.72rem;
+  .refresh-btn {
+    @apply ml-auto mb-1 px-[18px] py-1.5 bg-transparent border border-primary-dim text-primary font-sans text-[0.8rem] font-bold tracking-[0.14em] uppercase cursor-pointer transition-all duration-150 hover:bg-primary-glow hover:border-primary hover:text-white hover:shadow-[0_0_8px_var(--color-primary-glow)];
   }
 }

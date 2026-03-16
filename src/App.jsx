@@ -5,7 +5,7 @@ import { fetchLeaderboard, fetchRoomsAll } from './api'
 
 const REFRESH_INTERVAL = 60_000 // 60 seconds
 
-const TABS = ['Leaderboard', 'Rooms']
+const TABS = ['Matching', 'Leaderboard']
 
 function load(fetcher, setState) {
   setState((s) => ({ ...s, loading: true, error: null }))
@@ -15,7 +15,7 @@ function load(fetcher, setState) {
 }
 
 export default function App() {
-  const [tab, setTab] = useState('Leaderboard')
+  const [tab, setTab] = useState('Matching')
   const [lb, setLb] = useState({ data: null, loading: true, error: null })
   const [rooms, setRooms] = useState({ data: null, loading: true, error: null })
 
@@ -33,16 +33,18 @@ export default function App() {
   }, [loadLeaderboard, loadRooms])
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>Tekken Tag Tournament 2</h1>
-        <div className="live-badge">
-          <span className="live-dot" />
+    <div className="mx-auto max-w-[960px] px-4 pb-12">
+      <header className="app-header relative border-b-2 border-primary pt-7 pb-5 mb-1">
+        <h1 className="font-display text-[clamp(1.05rem,4vw,1.8rem)] font-[900] m-0 mb-1.5 tracking-wide uppercase">
+          Tekken Tag Tournament 2
+        </h1>
+        <div className="inline-flex items-center gap-1.5 text-[0.72rem] font-bold tracking-[0.2em] uppercase text-primary">
+          <span className="w-[7px] h-[7px] rounded-full bg-primary animate-[blink_1.6s_ease-in-out_infinite]" />
           Live
         </div>
       </header>
 
-      <nav className="tab-bar">
+      <nav className="flex items-end flex-wrap gap-0.5 mt-5 border-b border-border-light pb-0">
         {TABS.map((t) => (
           <button
             key={t}
@@ -55,14 +57,14 @@ export default function App() {
         <button
           className="refresh-btn"
           aria-label="Refresh"
-          onClick={tab === 'Leaderboard' ? loadLeaderboard : loadRooms}
+          onClick={tab === 'Matching' ? loadRooms : loadLeaderboard}
         >
           ↻ Refresh
         </button>
       </nav>
 
+      {tab === 'Matching' && <Rooms {...rooms} />}
       {tab === 'Leaderboard' && <Leaderboard {...lb} />}
-      {tab === 'Rooms' && <Rooms {...rooms} />}
     </div>
   )
 }

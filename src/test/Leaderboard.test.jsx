@@ -28,12 +28,11 @@ describe('Leaderboard', () => {
     expect(screen.getByText('Total records: 42')).toBeInTheDocument()
     expect(screen.getByText('#')).toBeInTheDocument()
     expect(screen.getByText('Player')).toBeInTheDocument()
-    expect(screen.getByText('Score')).toBeInTheDocument()
-    expect(screen.getByText('Main')).toBeInTheDocument()
+expect(screen.getByText('Main')).toBeInTheDocument()
     expect(screen.getByText('Sub')).toBeInTheDocument()
   })
 
-  it('renders each entry row with rank, name, score, chars', () => {
+  it('renders each entry row with rank, name, chars', () => {
     const data = {
       total_records: 1,
       entries: [
@@ -43,8 +42,8 @@ describe('Leaderboard', () => {
           online_name: 'KazuyaFan',
           score: 9999,
           player_info: {
-            main_char_info: { name: 'Kazuya' },
-            sub_char_info: { name: 'Devil' },
+            main_char_info: { name: 'Kazuya', rank_info: { name: 'Destroyer' } },
+            sub_char_info: { name: 'Devil', rank_info: { name: 'Vanquisher' } },
           },
         },
       ],
@@ -53,9 +52,9 @@ describe('Leaderboard', () => {
 
     expect(screen.getByText('1')).toBeInTheDocument()
     expect(screen.getByText('KazuyaFan')).toBeInTheDocument()
-    expect(screen.getByText('9999')).toBeInTheDocument()
-    expect(screen.getByText('Kazuya')).toBeInTheDocument()
-    expect(screen.getByText('Devil')).toBeInTheDocument()
+    expect(screen.getByAltText('Kazuya')).toBeInTheDocument()
+    expect(screen.getByText('Destroyer')).toBeInTheDocument()
+    expect(screen.getByText('Vanquisher')).toBeInTheDocument()
   })
 
   it('shows em-dash when player_info is missing', () => {

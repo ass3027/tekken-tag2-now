@@ -20,8 +20,8 @@ const LEADERBOARD_DATA = {
       online_name: 'TestPlayer',
       score: 5000,
       player_info: {
-        main_char_info: { name: 'Jin' },
-        sub_char_info: { name: 'Heihachi' },
+        main_char_info: { name: 'Jin', rank_info: { name: 'Destroyer' } },
+        sub_char_info: { name: 'Heihachi', rank_info: { name: 'Vanquisher' } },
       },
     },
   ],
@@ -30,7 +30,7 @@ const LEADERBOARD_DATA = {
 const ROOMS_DATA = {
   total: 1,
   rooms: [
-    { room_id: 'r1', owner_online_name: 'RoomOwner', rank: 'Platinum', max_slots: 6 },
+    { room_id: 'r1', owner_online_name: 'RoomOwner', rank_info: { name: 'Platinum' }, max_slots: 6 },
   ],
 }
 
@@ -58,51 +58,51 @@ describe('App', () => {
     expect(fetchRoomsAll).toHaveBeenCalledOnce()
   })
 
-  it('default tab is Leaderboard and shows leaderboard content', async () => {
+  it('default tab is Matching and shows rooms content', async () => {
     await renderApp()
-
-    expect(screen.getByText('TestPlayer')).toBeInTheDocument()
-    expect(screen.queryByText('RoomOwner')).not.toBeInTheDocument()
-  })
-
-  it('clicking Rooms tab switches to rooms view', async () => {
-    await renderApp()
-
-    await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Rooms' }))
-    })
 
     expect(screen.getByText('RoomOwner')).toBeInTheDocument()
     expect(screen.queryByText('TestPlayer')).not.toBeInTheDocument()
   })
 
-  it('clicking Refresh on Leaderboard tab calls fetchLeaderboard again', async () => {
+  it('clicking Leaderboard tab switches to leaderboard view', async () => {
     await renderApp()
 
-    // Leaderboard tab is default
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Leaderboard' }))
+    })
+
+    expect(screen.getByText('TestPlayer')).toBeInTheDocument()
+    expect(screen.queryByText('RoomOwner')).not.toBeInTheDocument()
+  })
+
+  it('clicking Refresh on Matching tab calls fetchRoomsAll again', async () => {
+    await renderApp()
+
+    // Matching tab is default
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: 'Refresh' }))
     })
 
     // Called once on mount and once on Refresh click
-    expect(fetchLeaderboard).toHaveBeenCalledTimes(2)
-    expect(fetchRoomsAll).toHaveBeenCalledTimes(1)
+    expect(fetchRoomsAll).toHaveBeenCalledTimes(2)
+    expect(fetchLeaderboard).toHaveBeenCalledTimes(1)
   })
 
-  it('clicking Refresh on Rooms tab calls fetchRoomsAll again', async () => {
+  it('clicking Refresh on Leaderboard tab calls fetchLeaderboard again', async () => {
     await renderApp()
 
-    // Switch to Rooms tab first
+    // Switch to Leaderboard tab first
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Rooms' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Leaderboard' }))
     })
 
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: 'Refresh' }))
     })
 
-    expect(fetchRoomsAll).toHaveBeenCalledTimes(2)
-    expect(fetchLeaderboard).toHaveBeenCalledTimes(1)
+    expect(fetchLeaderboard).toHaveBeenCalledTimes(2)
+    expect(fetchRoomsAll).toHaveBeenCalledTimes(1)
   })
 
   it('auto-refresh: advancing timer by 60s triggers another fetch', async () => {
@@ -151,7 +151,7 @@ describe('App', () => {
 
     render(<App />)
 
-    expect(screen.getByText('Loading leaderboard...')).toBeInTheDocument()
+    expect(screen.getByText('Loading rooms...')).toBeInTheDocument()
   })
 
   it('shows error when fetchLeaderboard rejects', async () => {
@@ -159,6 +159,11 @@ describe('App', () => {
 
     await act(async () => {
       render(<App />)
+    })
+
+    // Switch to Leaderboard tab to see the error
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Leaderboard' }))
     })
 
     await waitFor(() => {

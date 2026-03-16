@@ -13,23 +13,21 @@ export default function Rooms({ data, loading, error }) {
       {rooms.length === 0 ? (
         <p className="state-msg">No active rooms.</p>
       ) : (
-        <div className="table-wrap">
-          <table>
+        <div className="w-full overflow-x-auto">
+          <table className="border-collapse w-full min-w-[340px]">
             <thead>
               <tr>
-                <th>Room ID</th>
-                <th>Owner</th>
-                <th>Rank</th>
-                <th>Slots</th>
+                <th className="tbl-th">Room ID</th>
+                <th className="tbl-th">Owner</th>
+                <th className="tbl-th">Rank</th>
               </tr>
             </thead>
             <tbody>
               {rooms.map((r) => (
-                <tr key={r.room_id}>
-                  <td>{r.room_id}</td>
+                <tr key={r.room_id} className="tbl-row">
+                  <td className="tbl-td">{r.room_id}</td>
                   <td className="player-name">{r.owner_online_name}</td>
-                  <td>{r.rank}</td>
-                  <td>{r.max_slots}</td>
+                  <td className="tbl-td">{r.rank_info?.name}</td>
                 </tr>
               ))}
             </tbody>

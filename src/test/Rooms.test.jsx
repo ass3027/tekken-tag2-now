@@ -27,7 +27,7 @@ describe('Rooms', () => {
   })
 
   it('uses rooms.length as total when data.total is absent', () => {
-    const data = { rooms: [{ room_id: 'r1', owner_online_name: 'Alice', rank: 'Gold', max_slots: 4 }] }
+    const data = { rooms: [{ room_id: 'r1', owner_online_name: 'Alice', rank_info: { name: 'Gold' }, max_slots: 4 }] }
     render(<Rooms loading={false} data={data} error={null} />)
 
     expect(screen.getByText('Total rooms: 1')).toBeInTheDocument()
@@ -37,8 +37,8 @@ describe('Rooms', () => {
     const data = {
       total: 2,
       rooms: [
-        { room_id: 'room-001', owner_online_name: 'Alice', rank: 'Gold', max_slots: 4 },
-        { room_id: 'room-002', owner_online_name: 'Bob', rank: 'Silver', max_slots: 8 },
+        { room_id: 'room-001', owner_online_name: 'Alice', rank_info: { name: 'Gold' }, max_slots: 4 },
+        { room_id: 'room-002', owner_online_name: 'Bob', rank_info: { name: 'Silver' }, max_slots: 8 },
       ],
     }
     render(<Rooms loading={false} data={data} error={null} />)
@@ -48,17 +48,14 @@ describe('Rooms', () => {
     expect(screen.getByText('Room ID')).toBeInTheDocument()
     expect(screen.getByText('Owner')).toBeInTheDocument()
     expect(screen.getByText('Rank')).toBeInTheDocument()
-    expect(screen.getByText('Slots')).toBeInTheDocument()
 
     expect(screen.getByText('room-001')).toBeInTheDocument()
     expect(screen.getByText('Alice')).toBeInTheDocument()
     expect(screen.getByText('Gold')).toBeInTheDocument()
-    expect(screen.getByText('4')).toBeInTheDocument()
 
     expect(screen.getByText('room-002')).toBeInTheDocument()
     expect(screen.getByText('Bob')).toBeInTheDocument()
     expect(screen.getByText('Silver')).toBeInTheDocument()
-    expect(screen.getByText('8')).toBeInTheDocument()
   })
 
   it('falls back to empty array when data.rooms is undefined', () => {

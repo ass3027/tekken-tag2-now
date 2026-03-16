@@ -37,8 +37,8 @@ export default function Leaderboard({ data, loading, error, onRefresh }) {
             <tr>
               <th className="tbl-th w-2/20">#</th>
               <th className="tbl-th w-7/20">Player</th>
-              <th className="tbl-th w-3/20">Main</th>
-              <th className="tbl-th w-3/20">Sub</th>
+              <th className="tbl-th w-3/20 text-center">Main</th>
+              <th className="tbl-th w-3/20 text-center">Sub</th>
             </tr>
           </thead>
           <tbody>

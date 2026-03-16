@@ -31,7 +31,16 @@ const ROOMS_DATA = {
   total: 1,
   groups: {
     rank_match: [
-      { room_id: 'r1', owner_online_name: 'RoomOwner', rank_info: { name: 'Platinum' }, max_slots: 6 },
+      {
+        room_id: 'r1',
+        owner_online_name: 'RoomOwner',
+        rank_info: { name: 'Platinum', tier: 'Platinum' },
+        max_slots: 6,
+        users: [
+          { online_name: 'RoomOwner', user_id: 'RoomOwner' },
+          { online_name: 'Challenger', user_id: 'Challenger' },
+        ],
+      },
     ],
   },
 }
@@ -142,7 +151,7 @@ describe('App', () => {
   it('renders app title', async () => {
     await renderApp()
 
-    expect(screen.getByRole('heading', { name: 'Tekken Tag Tournament 2' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Tag2Now' })).toBeInTheDocument()
     expect(screen.getByText('Live')).toBeInTheDocument()
   })
 

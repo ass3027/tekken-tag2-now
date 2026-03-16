@@ -64,9 +64,9 @@ export default function App() {
 
   return (
     <div className="mx-auto max-w-[960px] px-4 pb-12">
-      <header className="app-header relative border-b-2 border-primary pt-7 pb-5 mb-1">
-        <h1 className="font-display text-[clamp(1.05rem,4vw,1.8rem)] font-[900] m-0 mb-1.5 tracking-wide uppercase">
-          Tekken Tag Tournament 2
+      <header className="app-header relative border-b-2 border-primary pt-7 pb-5 mb-1 flex items-baseline gap-3">
+        <h1 className="font-display text-[clamp(1.05rem,4vw,1.8rem)] font-[900] m-0 tracking-wide uppercase">
+          Tag2Now
         </h1>
         <div className="inline-flex items-center gap-1.5 text-[0.72rem] font-bold tracking-[0.2em] uppercase text-primary">
           <span className="w-[7px] h-[7px] rounded-full bg-primary animate-[blink_1.6s_ease-in-out_infinite]" />
@@ -92,6 +92,7 @@ export default function App() {
           loading={rooms.loading}
           error={rooms.error}
           onRefresh={loadRooms}
+          groupKey={activeTab}
         />
       )}
       {!isRoomTab && (rooms.loading || rooms.error) && groupKeys.length === 0 && (

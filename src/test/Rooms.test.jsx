@@ -21,36 +21,44 @@ describe('Rooms', () => {
   it('shows "No active rooms." when rooms array is empty', () => {
     const data = { rooms: [] }
     render(<Rooms loading={false} data={data} error={null} />)
-
     expect(screen.getByText('No active rooms.')).toBeInTheDocument()
   })
 
-  it('renders table headers and room rows', () => {
+  it('renders PlayerMatchTable when groupKey is not rank_match', () => {
     const data = {
       rooms: [
-        { room_id: 'room-001', owner_online_name: 'Alice', rank_info: { name: 'Gold' } },
-        { room_id: 'room-002', owner_online_name: 'Bob', rank_info: { name: 'Silver' } },
+        {
+          room_id: 1,
+          owner_online_name: 'Alice',
+          rank_info: null,
+          users: [{ online_name: 'Alice', user_id: 'Alice' }],
+        },
       ],
     }
     render(<Rooms loading={false} data={data} error={null} />)
+    expect(screen.getByText('#')).toBeInTheDocument()
+    expect(screen.getByText('User')).toBeInTheDocument()
+    expect(screen.getByText('Alice (1)')).toBeInTheDocument()
+  })
 
-    expect(screen.getByText('Room ID')).toBeInTheDocument()
-    expect(screen.getByText('Owner')).toBeInTheDocument()
-    expect(screen.getByText('Rank')).toBeInTheDocument()
-
-    expect(screen.getByText('room-001')).toBeInTheDocument()
-    expect(screen.getByText('Alice')).toBeInTheDocument()
-    expect(screen.getByText('Gold')).toBeInTheDocument()
-
-    expect(screen.getByText('room-002')).toBeInTheDocument()
-    expect(screen.getByText('Bob')).toBeInTheDocument()
-    expect(screen.getByText('Silver')).toBeInTheDocument()
+  it('renders RankMatchTable when groupKey is rank_match', () => {
+    const data = {
+      rooms: [
+        {
+          room_id: 1,
+          rank_info: { name: '1st 나무단', tier: '나무단' },
+          users: [{ online_name: 'A' }, { online_name: 'B' }],
+        },
+      ],
+    }
+    render(<Rooms loading={false} data={data} error={null} groupKey="rank_match" />)
+    expect(screen.getByText('Status')).toBeInTheDocument()
+    expect(screen.getByText('게임 중')).toBeInTheDocument()
   })
 
   it('falls back to empty array when data.rooms is undefined', () => {
     const data = {}
     render(<Rooms loading={false} data={data} error={null} />)
-
     expect(screen.getByText('No active rooms.')).toBeInTheDocument()
   })
 })

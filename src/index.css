@@ -103,7 +103,7 @@
   }
 
   .player-name {
-    @apply px-2.5 py-2 text-[0.95rem] whitespace-nowrap font-bold text-white tracking-[0.03em] max-w-[28px] overflow-hidden text-ellipsis;
+    @apply px-2.5 py-2 text-[0.95rem] whitespace-nowrap font-bold text-white tracking-[0.03em];
   }
 
   .char-td {

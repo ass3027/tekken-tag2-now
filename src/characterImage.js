@@ -56,6 +56,7 @@ const NAME_TO_FILE = {
   'Dr.':          'Dr_Bosconovitch',
   'Slim Bob':     'Slim_Bob',
   'Tiger':        'Tiger',
+  'Feng':         'Feng'
 }
 
 /**

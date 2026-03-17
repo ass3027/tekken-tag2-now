@@ -19,12 +19,12 @@ describe('RankMatchTable', () => {
 
     expect(screen.getByText('나무단')).toBeInTheDocument()
     expect(screen.getByText('Rank')).toBeInTheDocument()
-    expect(screen.getByText('Status')).toBeInTheDocument()
+    expect(screen.getByText('상태')).toBeInTheDocument()
     expect(screen.getByText('User 1')).toBeInTheDocument()
     expect(screen.getByText('User 2')).toBeInTheDocument()
 
     expect(screen.getByText('1st 나무단')).toBeInTheDocument()
-    expect(screen.getByText('게임 중')).toBeInTheDocument()
+    expect(screen.getByTitle('게임 중')).toBeInTheDocument()
     expect(screen.getByText('Longuring')).toBeInTheDocument()
     expect(screen.getByText('DuelMan')).toBeInTheDocument()
   })
@@ -40,7 +40,7 @@ describe('RankMatchTable', () => {
     ]
     render(<RankMatchTable rooms={rooms} />)
 
-    expect(screen.getByText('찾는 중')).toBeInTheDocument()
+    expect(screen.getByTitle('찾는 중')).toBeInTheDocument()
     expect(screen.getByText('SoloPlayer')).toBeInTheDocument()
     expect(screen.getByText('—')).toBeInTheDocument()
   })

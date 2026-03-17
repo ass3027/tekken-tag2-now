@@ -3,7 +3,8 @@ import Leaderboard from './components/Leaderboard'
 import Rooms from './components/Rooms'
 import { fetchLeaderboard, fetchRoomsAll } from './api'
 
-const REFRESH_INTERVAL = 60_000 // 60 seconds
+const ROOMS_REFRESH_INTERVAL = 10_000
+const LEADERBOARD_REFRESH_INTERVAL = 60_000
 
 const GROUP_LABELS = {
   player_match: '플매',
@@ -17,16 +18,22 @@ function formatGroupName(key) {
 }
 
 function load(fetcher, setState) {
-  setState((s) => ({ ...s, loading: true, error: null }))
+  setState((s) => s.data
+    ? { ...s, refreshing: true, error: null }
+    : { ...s, loading: true, error: null }
+  )
   fetcher()
-    .then((data) => setState({ data, loading: false, error: null }))
-    .catch((e) => setState((s) => ({ ...s, loading: false, error: e.message })))
+    .then((data) => setState((s) => {
+      if (s.data === data) return s.refreshing ? { ...s, refreshing: false } : s
+      return { data, loading: false, refreshing: false, error: null }
+    }))
+    .catch((e) => setState((s) => ({ ...s, loading: false, refreshing: false, error: e.message })))
 }
 
 export default function App() {
   const [tab, setTab] = useState(null)
-  const [lb, setLb] = useState({ data: null, loading: true, error: null })
-  const [rooms, setRooms] = useState({ data: null, loading: true, error: null })
+  const [lb, setLb] = useState({ data: null, loading: true, refreshing: false, error: null })
+  const [rooms, setRooms] = useState({ data: null, loading: true, refreshing: false, error: null })
 
   const loadLeaderboard = useCallback(() => load(() => fetchLeaderboard(20), setLb), [])
   const loadRooms = useCallback(() => load(fetchRoomsAll, setRooms), [])
@@ -34,11 +41,9 @@ export default function App() {
   useEffect(() => {
     loadLeaderboard()
     loadRooms()
-    const timer = setInterval(() => {
-      loadLeaderboard()
-      loadRooms()
-    }, REFRESH_INTERVAL)
-    return () => clearInterval(timer)
+    const roomsTimer = setInterval(loadRooms, ROOMS_REFRESH_INTERVAL)
+    const lbTimer = setInterval(loadLeaderboard, LEADERBOARD_REFRESH_INTERVAL)
+    return () => { clearInterval(roomsTimer); clearInterval(lbTimer) }
   }, [loadLeaderboard, loadRooms])
 
   const groups = rooms.data?.groups ?? {}
@@ -64,9 +69,9 @@ export default function App() {
 
   return (
     <div className="mx-auto max-w-[960px] px-4 pb-12">
-      <header className="app-header relative border-b-2 border-primary pt-7 pb-5 mb-1 flex items-baseline gap-3">
+      <header className="app-header relative border-b-2 border-accent pt-7 pb-5 mb-1 flex items-baseline gap-3">
         <h1 className="font-display text-[clamp(1.05rem,4vw,1.8rem)] font-[900] m-0 tracking-wide uppercase">
-          Tag2Now
+          Tag<span className="header-accent">2</span>Now
         </h1>
         <div className="inline-flex items-center gap-1.5 text-[0.72rem] font-bold tracking-[0.2em] uppercase text-primary">
           <span className="w-[7px] h-[7px] rounded-full bg-primary animate-[blink_1.6s_ease-in-out_infinite]" />
@@ -90,6 +95,7 @@ export default function App() {
         <Rooms
           data={activeRoomsData}
           loading={rooms.loading}
+          refreshing={rooms.refreshing}
           error={rooms.error}
           onRefresh={loadRooms}
           groupKey={activeTab}

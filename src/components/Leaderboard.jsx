@@ -1,5 +1,6 @@
 import { charImageUrl } from '../characterImage'
 import { panelStatus } from '../panelStatus'
+import LoadingBar from './LoadingBar'
 import { TIER_STYLES } from '../tierColors'
 
 function CharCell({ name, rankInfo }) {
@@ -17,13 +18,14 @@ function CharCell({ name, rankInfo }) {
 
 const RANK_COLORS = { 1: 'text-secondary-light', 2: 'text-silver', 3: 'text-bronze' }
 
-export default function Leaderboard({ data, loading, error, onRefresh }) {
+export default function Leaderboard({ data, loading, refreshing, error, onRefresh }) {
   const s = panelStatus(loading, error, 'Loading leaderboard...')
   if (s) return s
   if (!data) return null
 
   return (
-    <div className="panel">
+    <div className="panel relative">
+      <LoadingBar visible={refreshing} />
       <div className="panel-meta flex items-center justify-between">
         <span>Total records: {data.total_records}</span>
         {onRefresh && (

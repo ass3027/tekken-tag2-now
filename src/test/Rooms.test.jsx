@@ -61,4 +61,18 @@ describe('Rooms', () => {
     render(<Rooms loading={false} data={data} error={null} />)
     expect(screen.getByText('No active rooms.')).toBeInTheDocument()
   })
+
+  it('shows loading bar when refreshing=true', () => {
+    const data = { rooms: [] }
+    const { container } = render(<Rooms loading={false} refreshing={true} data={data} error={null} />)
+    const bar = container.querySelector('.loading-bar')
+    expect(bar).toBeInTheDocument()
+    expect(bar).not.toHaveClass('loading-bar-hidden')
+  })
+
+  it('hides loading bar when refreshing=false', () => {
+    const data = { rooms: [] }
+    const { container } = render(<Rooms loading={false} refreshing={false} data={data} error={null} />)
+    expect(container.querySelector('.loading-bar')).toHaveClass('loading-bar-hidden')
+  })
 })

@@ -12,6 +12,7 @@
   --color-primary-glow: rgba(0, 200, 212, 0.25);
   --color-secondary: #c9a84c;
   --color-secondary-light: #f0d070;
+  --color-accent: #c8302e;
   --color-error: #c8102e;
   --color-silver: #c0c0c0;
   --color-bronze: #cd7f32;
@@ -43,6 +44,11 @@
   50%      { opacity: 0.15; box-shadow: none; }
 }
 
+@keyframes loading-slide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
 /* ─── Component classes ───────────────────────────────────── */
 @layer components {
   /* Pseudo-elements (can't be done with @apply) */
@@ -53,11 +59,26 @@
     left: 0;
     width: 72px;
     height: 2px;
-    background: var(--color-secondary);
+    background: var(--color-accent);
   }
 
   .app-header h1 {
-    background: linear-gradient(100deg, #fff 0%, var(--color-secondary) 45%, #fff 100%);
+    background: linear-gradient(
+      100deg,
+      #8a8a9a 0%,
+      #ffffff 25%,
+      #b0b0c0 50%,
+      #ffffff 75%,
+      #8a8a9a 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 8px rgba(200, 60, 20, 0.3));
+  }
+
+  .app-header h1 .header-accent {
+    background: var(--color-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -132,5 +153,33 @@
 
   .refresh-btn {
     @apply ml-auto mb-1 px-[18px] py-1.5 bg-transparent border border-primary-dim text-primary font-sans text-[0.8rem] font-bold tracking-[0.14em] uppercase cursor-pointer transition-all duration-150 hover:bg-primary-glow hover:border-primary hover:text-white hover:shadow-[0_0_8px_var(--color-primary-glow)];
+  }
+
+  .loading-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    overflow: hidden;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+
+  .loading-bar-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .loading-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    animation: loading-slide 1.2s ease-in-out infinite;
   }
 }

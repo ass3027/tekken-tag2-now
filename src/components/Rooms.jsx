@@ -1,8 +1,9 @@
 import { panelStatus } from '../panelStatus'
+import LoadingBar from './LoadingBar'
 import RankMatchTable from './RankMatchTable'
 import PlayerMatchTable from './PlayerMatchTable'
 
-export default function Rooms({ data, loading, error, onRefresh, groupKey }) {
+export default function Rooms({ data, loading, refreshing, error, onRefresh, groupKey }) {
   const s = panelStatus(loading, error, 'Loading rooms...')
   if (s) return s
   if (!data) return null
@@ -10,7 +11,8 @@ export default function Rooms({ data, loading, error, onRefresh, groupKey }) {
   const rooms = data.rooms ?? []
 
   return (
-    <div className="panel">
+    <div className="panel relative">
+      <LoadingBar visible={refreshing} />
       <div className="panel-meta flex items-center justify-between">
         <span>{rooms.length} room{rooms.length !== 1 ? 's' : ''}</span>
         {onRefresh && (

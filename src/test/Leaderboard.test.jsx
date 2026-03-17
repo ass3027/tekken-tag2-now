@@ -98,4 +98,18 @@ expect(screen.getByText('Main')).toBeInTheDocument()
     const dashes = screen.getAllByText('—')
     expect(dashes).toHaveLength(2)
   })
+
+  it('shows loading bar when refreshing=true', () => {
+    const data = { total_records: 0, entries: [] }
+    const { container } = render(<Leaderboard loading={false} refreshing={true} data={data} error={null} />)
+    const bar = container.querySelector('.loading-bar')
+    expect(bar).toBeInTheDocument()
+    expect(bar).not.toHaveClass('loading-bar-hidden')
+  })
+
+  it('hides loading bar when refreshing=false', () => {
+    const data = { total_records: 0, entries: [] }
+    const { container } = render(<Leaderboard loading={false} refreshing={false} data={data} error={null} />)
+    expect(container.querySelector('.loading-bar')).toHaveClass('loading-bar-hidden')
+  })
 })

@@ -116,7 +116,7 @@ describe('App', () => {
     expect(fetchRoomsAll).toHaveBeenCalledTimes(1)
   })
 
-  it('auto-refresh: advancing timer by 60s triggers another fetch', async () => {
+  it('auto-refresh: rooms refresh every 10s, leaderboard every 60s', async () => {
     vi.useFakeTimers()
 
     await renderApp()
@@ -124,12 +124,21 @@ describe('App', () => {
     expect(fetchLeaderboard).toHaveBeenCalledTimes(1)
     expect(fetchRoomsAll).toHaveBeenCalledTimes(1)
 
+    // After 10s: rooms refreshes, leaderboard does not
     await act(async () => {
-      vi.advanceTimersByTime(60_000)
+      vi.advanceTimersByTime(10_000)
     })
 
-    expect(fetchLeaderboard).toHaveBeenCalledTimes(2)
     expect(fetchRoomsAll).toHaveBeenCalledTimes(2)
+    expect(fetchLeaderboard).toHaveBeenCalledTimes(1)
+
+    // After 60s total: rooms has refreshed 6 times + 1 mount, leaderboard 1 + 1 mount
+    await act(async () => {
+      vi.advanceTimersByTime(50_000)
+    })
+
+    expect(fetchRoomsAll).toHaveBeenCalledTimes(7)
+    expect(fetchLeaderboard).toHaveBeenCalledTimes(2)
   })
 
   it('cleans up interval on unmount', async () => {
@@ -144,14 +153,14 @@ describe('App', () => {
 
     unmount()
 
-    expect(clearIntervalSpy).toHaveBeenCalled()
+    expect(clearIntervalSpy).toHaveBeenCalledTimes(2)
     clearIntervalSpy.mockRestore()
   })
 
   it('renders app title', async () => {
     await renderApp()
 
-    expect(screen.getByRole('heading', { name: 'Tag2Now' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Tag 2 Now' })).toBeInTheDocument()
     expect(screen.getByText('Live')).toBeInTheDocument()
   })
 
@@ -163,6 +172,34 @@ describe('App', () => {
     render(<App />)
 
     expect(screen.getByText('Loading rooms...')).toBeInTheDocument()
+  })
+
+  it('auto-refresh keeps content visible and shows loading bar instead of loading message', async () => {
+    vi.useFakeTimers()
+
+    await renderApp()
+
+    // Data is visible after initial load
+    expect(screen.getByText('RoomOwner')).toBeInTheDocument()
+    expect(screen.queryByText('Loading rooms...')).not.toBeInTheDocument()
+
+    // Make the next fetch hang so we can observe the refreshing state
+    fetchRoomsAll.mockReturnValue(new Promise(() => {}))
+
+    // Trigger auto-refresh
+    await act(async () => {
+      vi.advanceTimersByTime(10_000)
+    })
+
+    // Content should still be visible (not replaced by loading message)
+    expect(screen.getByText('RoomOwner')).toBeInTheDocument()
+    expect(screen.queryByText('Loading rooms...')).not.toBeInTheDocument()
+
+    // Loading bar should be visible
+    const panel = screen.getByText('RoomOwner').closest('.panel')
+    const bar = panel.querySelector('.loading-bar')
+    expect(bar).toBeInTheDocument()
+    expect(bar).not.toHaveClass('loading-bar-hidden')
   })
 
   it('shows error when fetchLeaderboard rejects', async () => {

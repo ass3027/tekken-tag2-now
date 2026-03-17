@@ -114,6 +114,14 @@
     @apply text-[0.70rem] text-txt-dim whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px];
   }
 
+  .tier-heading {
+    @apply font-bold tracking-[0.14em] uppercase text-txt border-b border-border;
+  }
+
+  .tier-separator {
+    @apply bg-bg-deep;
+  }
+
   .tab-btn {
     @apply relative px-[22px] py-[9px] bg-transparent border border-transparent border-b-0 font-sans text-[0.9rem] font-bold tracking-[0.12em] uppercase cursor-pointer transition-colors duration-150 -bottom-px text-txt-dim hover:text-txt;
   }

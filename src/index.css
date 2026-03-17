@@ -96,11 +96,11 @@
 
   /* Reusable layout classes */
   .panel {
-    @apply bg-bg-panel border border-border-light border-t-0 px-5 pt-5 pb-6;
+    @apply bg-bg-panel border border-border-light border-t-0 px-3 pt-3 pb-6;
   }
 
   .panel-meta {
-    @apply m-0 mb-3.5 text-[0.78rem] font-semibold tracking-[0.12em] uppercase text-txt-dim;
+    @apply m-0 mb-2 text-[0.78rem] font-semibold tracking-[0.12em] uppercase text-txt-dim;
   }
 
   .state-msg {
@@ -152,7 +152,7 @@
   }
 
   .refresh-btn {
-    @apply ml-auto mb-1 px-[18px] py-1.5 bg-transparent border border-primary-dim text-primary font-sans text-[0.8rem] font-bold tracking-[0.14em] uppercase cursor-pointer transition-all duration-150 hover:bg-primary-glow hover:border-primary hover:text-white hover:shadow-[0_0_8px_var(--color-primary-glow)];
+    @apply ml-auto mb-1 px-2.5 py-0.5 bg-transparent border border-primary-dim text-primary font-sans text-[0.8rem] font-bold tracking-[0.14em] uppercase cursor-pointer transition-all duration-150 hover:bg-primary-glow hover:border-primary hover:text-white hover:shadow-[0_0_8px_var(--color-primary-glow)];
   }
 
   .loading-bar {

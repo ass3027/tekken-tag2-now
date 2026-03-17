@@ -13,7 +13,7 @@ export default function Rooms({ data, loading, refreshing, error, onRefresh, gro
   return (
     <div className="panel relative">
       <LoadingBar visible={refreshing} />
-      <div className="panel-meta flex items-center justify-between">
+      <div className="panel-meta flex items-center justify-between px-4">
         <span>{rooms.length} room{rooms.length !== 1 ? 's' : ''}</span>
         {onRefresh && (
           <button className="refresh-btn" aria-label="Refresh" onClick={onRefresh}>
@@ -22,7 +22,7 @@ export default function Rooms({ data, loading, refreshing, error, onRefresh, gro
         )}
       </div>
       {rooms.length === 0 ? (
-        <p className="state-msg">No active rooms.</p>
+        <p className="state-msg px-4">No active rooms.</p>
       ) : groupKey === 'rank_match' ? (
         <RankMatchTable rooms={rooms} />
       ) : (

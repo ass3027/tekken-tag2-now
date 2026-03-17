@@ -68,8 +68,8 @@ export default function App() {
     : null
 
   return (
-    <div className="mx-auto max-w-[960px] px-4 pb-12">
-      <header className="app-header relative border-b-2 border-accent pt-7 pb-5 mb-1 flex items-baseline gap-3">
+    <div className="mx-auto max-w-[960px] pb-12">
+      <header className="app-header relative border-b-2 border-accent pt-7 pb-5 mb-1 flex items-baseline gap-3 px-4">
         <h1 className="font-display text-[clamp(1.05rem,4vw,1.8rem)] font-[900] m-0 tracking-wide uppercase">
           Tag<span className="header-accent">2</span>Now
         </h1>
@@ -91,20 +91,22 @@ export default function App() {
         ))}
       </nav>
 
-      {isRoomTab && (
-        <Rooms
-          data={activeRoomsData}
-          loading={rooms.loading}
-          refreshing={rooms.refreshing}
-          error={rooms.error}
-          onRefresh={loadRooms}
-          groupKey={activeTab}
-        />
-      )}
-      {!isRoomTab && (rooms.loading || rooms.error) && groupKeys.length === 0 && (
-        <Rooms data={null} loading={rooms.loading} error={rooms.error} onRefresh={loadRooms} />
-      )}
-      {activeTab === 'leaderboard' && <Leaderboard {...lb} onRefresh={loadLeaderboard} />}
+      <div>
+        {isRoomTab && (
+          <Rooms
+            data={activeRoomsData}
+            loading={rooms.loading}
+            refreshing={rooms.refreshing}
+            error={rooms.error}
+            onRefresh={loadRooms}
+            groupKey={activeTab}
+          />
+        )}
+        {!isRoomTab && (rooms.loading || rooms.error) && groupKeys.length === 0 && (
+          <Rooms data={null} loading={rooms.loading} error={rooms.error} onRefresh={loadRooms} />
+        )}
+        {activeTab === 'leaderboard' && <Leaderboard {...lb} onRefresh={loadLeaderboard} />}
+      </div>
     </div>
   )
 }

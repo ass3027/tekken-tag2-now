@@ -26,7 +26,7 @@ export default function Leaderboard({ data, loading, refreshing, error, onRefres
   return (
     <div className="panel relative">
       <LoadingBar visible={refreshing} />
-      <div className="panel-meta flex items-center justify-between">
+      <div className="panel-meta flex items-center justify-between px-4">
         <span>Total records: {data.total_records}</span>
         {onRefresh && (
           <button className="refresh-btn" aria-label="Refresh" onClick={onRefresh}>

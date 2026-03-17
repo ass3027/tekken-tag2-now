@@ -112,7 +112,7 @@
   }
 
   .tbl-th {
-    @apply bg-primary text-white font-sans text-[0.76rem] font-bold tracking-[0.14em] uppercase px-3.5 py-2 text-left whitespace-nowrap border-b-2 border-primary-dim;
+    @apply bg-primary text-white font-sans text-[0.86rem] font-bold tracking-[0.14em] uppercase px-3.5 py-2 text-left whitespace-nowrap border-b-2 border-primary-dim;
   }
 
   .tbl-row {
@@ -124,7 +124,7 @@
   }
 
   .player-name {
-    @apply px-2.5 py-2 text-[0.95rem] whitespace-nowrap font-bold text-white tracking-[0.03em];
+    @apply px-2.5 py-2 text-[0.95rem] font-bold text-white tracking-[0.03em] max-w-28 overflow-hidden text-ellipsis whitespace-nowrap;
   }
 
   .char-td {

@@ -29,10 +29,10 @@ export default function RankMatchTable({ rooms }) {
       <table className="border-collapse w-full min-w-85">
         <thead>
           <tr>
-            <th className="tbl-th">Rank</th>
+            <th className="tbl-th max-w-18">Rank</th>
             <th className="tbl-th w-9">상태</th>
-            <th className="tbl-th">User 1</th>
-            <th className="tbl-th">User 2</th>
+            <th className="tbl-th w-28 max-w-28">User 1</th>
+            <th className="tbl-th w-28 max-w-28">User 2</th>
           </tr>
         </thead>
         <tbody>
@@ -45,7 +45,7 @@ export default function RankMatchTable({ rooms }) {
                 const inGame = r.users?.length === 2
                 return (
                 <tr key={r.room_id} className="tbl-row">
-                  <td className="tbl-td font-bold" style={TIER_STYLES[r.rank_info?.tier]}>{r.rank_info?.name}</td>
+                  <td className="tbl-td font-bold max-w-18 overflow-hidden text-ellipsis" style={TIER_STYLES[r.rank_info?.tier]}>{r.rank_info?.name}</td>
                   <td className="tbl-td">
                     <span className={`flex items-center justify-center ${inGame ? 'text-green-400' : 'text-yellow-400'}`} title={inGame ? '게임 중' : '찾는 중'} aria-label={inGame ? '게임 중' : '찾는 중'}>
                       {inGame ? IconGamepad : IconSearch}

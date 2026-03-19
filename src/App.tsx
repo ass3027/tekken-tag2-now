@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import Leaderboard from './components/Leaderboard'
 import Rooms from './components/Rooms'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import { GROUP_ORDER, formatGroupName } from './tabConfig'
 import useLeaderboard from './hooks/useLeaderboard'
 import useRooms from './hooks/useRooms'
@@ -64,6 +65,8 @@ export default function App() {
         )}
         {activeTab === 'leaderboard' && <Leaderboard data={lb.data} loading={lb.loading} refreshing={lb.refreshing} error={lb.error} onRefresh={lb.refresh} />}
       </div>
+
+      <Footer />
     </div>
   )
 }

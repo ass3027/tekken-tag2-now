@@ -77,7 +77,7 @@ export default function Header({ totalUsers, leaderboardEntries }: HeaderProps) 
         ) : username ? (
           <div className="flex flex-col sm:flex-row sm:gap-2 items-center">
             <div className="flex gap-2 sm:text-lg">
-              <span className="text-accent font-bold">#{entry?.rank}</span>
+              <span className="text-accent font-bold">#{entry?.rank || "Unranked"}</span>
               <button
                   onClick={startEditing}
                   className="text-text-secondary hover:text-text-primary transition-colors cursor-pointer bg-transparent border-none p-0 flex items-center gap-1"

@@ -72,7 +72,7 @@ export default function Header({ totalUsers, leaderboardEntries }: HeaderProps) 
             onKeyDown={e => { if (e.key === 'Enter') commitEdit() }}
             onBlur={commitEdit}
             placeholder="Enter username"
-            className="bg-surface border border-border-light rounded px-2 py-0.5 text-text-primary text-sm w-36 outline-none focus:border-accent"
+            className="bg-surface border border-border-light rounded px-2 py-0.5 mt-1 text-text-primary text-base w-36 outline-none focus:border-accent"
           />
         ) : username ? (
           <div className="flex flex-col sm:flex-row sm:gap-2 items-center">
@@ -110,7 +110,7 @@ export default function Header({ totalUsers, leaderboardEntries }: HeaderProps) 
         ) : (
           <button
             onClick={startEditing}
-            className="text-text-secondary hover:text-text-primary transition-colors cursor-pointer bg-transparent border-none p-0 text-sm"
+            className="text-text-secondary text-xl font-semibold hover:text-text-primary transition-colors cursor-pointer bg-transparent border-2 rounded-sm mt-1 px-1"
           >
             Set username
           </button>

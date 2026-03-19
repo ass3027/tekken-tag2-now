@@ -37,8 +37,7 @@ jobs:
           ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
           IMAGE_TAG: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> "$GITHUB_OUTPUT"
@@ -58,29 +57,12 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Update ECS task definition with new image
-        id: task-def
-        run: |
-          NEW_IMAGE="${{ needs.build.outputs.image }}"
-
-          TASK_DEF=$(aws ecs describe-task-definition \
-            --task-definition ${{ vars.ECS_TASK_DEFINITION }} \
-            --query 'taskDefinition')
-          
-          echo "TASK_DEF=$TASK_DEF" >> "$GITHUB_OUTPUT"
-
-          NEW_TASK_DEF=$(echo "$TASK_DEF" | jq \
-            --arg IMAGE "$NEW_IMAGE" \
-            '.containerDefinitions[0].image = $IMAGE |
-            del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)')
-          
-          echo "NEW_TASK_DEF=$NEW_TASK_DEF" >> "$GITHUB_OUTPUT"
-
-          NEW_REVISION=$(echo "$NEW_TASK_DEF" | aws ecs register-task-definition \
-            --cli-input-json file:///dev/stdin \
-            --query 'taskDefinition.taskDefinitionArn' \
-            --output text)
-
-          echo "revision=$NEW_REVISION" >> "$GITHUB_OUTPUT"
+        id: update-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition-family: ${{ vars.ECS_TASK_DEFINITION_FAMILY }}
+          container-name: ${{ vars.ECS_CONTAINER_NAME }}
+          image: ${{ needs.build.outputs.image }}
 
       - name: Update ECS service
         run: |

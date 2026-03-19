@@ -34,7 +34,7 @@ export default function App() {
 
   return (
     <div className="mx-auto max-w-240 pb-12">
-      <Header totalUsers={rooms.data?.totalUsers} />
+      <Header totalUsers={rooms.data?.totalUsers} leaderboardEntries={lb.data?.entries} />
 
       <nav className="flex items-end flex-nowrap gap-0.5 mt-5 border-b border-border-light pb-0 overflow-x-auto overflow-y-hidden whitespace-nowrap">
         {tabs.map((t) => (

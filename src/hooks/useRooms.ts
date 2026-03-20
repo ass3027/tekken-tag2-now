@@ -8,7 +8,10 @@ export const fetchRoomsAll =  async () => {
   const data: Record<string, any> = await GET('rooms/all');
 
   const groups = Object.fromEntries(
-      Object.entries(data).filter(([, v]) => Array.isArray(v))
+      Object.entries(data)
+          .filter(([, v]) => Array.isArray(v))
+          // shuffle 1p 2p
+          .sort(() => Math.random() - 0.5)
   ) as Record<string, Room[]>;
 
   const { total, totalUsers } = Object.values(groups).reduce(

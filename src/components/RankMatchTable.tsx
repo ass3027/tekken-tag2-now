@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { TIER_STYLES } from '@/shared/tierColors'
 import type { Room } from '@/types'
+import RankImage from './RankImage'
 
 const IconGamepad = (
   <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -44,13 +45,17 @@ export default function RankMatchTable({ rooms }: RankMatchTableProps) {
           {tierGroups.map(([tier, tierRooms]) => (
             <Fragment key={tier}>
               <tr className="tier-separator">
-                <td colSpan={4} className="tier-heading py-2 px-1" style={TIER_STYLES[tier]}>{tier}</td>
+                <td colSpan={4} className="tier-heading py-2 px-1" style={TIER_STYLES[tier]}>
+                  <RankImage rankInfo={tierRooms[0]?.rank_info} className="h-6 w-auto" />
+                </td>
               </tr>
               {tierRooms.map((r) => {
                 const inGame = r.users?.length === 2
                 return (
                 <tr key={r.room_id} className="tbl-row">
-                  <td className="tbl-td font-bold max-w-18 overflow-hidden text-ellipsis" style={TIER_STYLES[r.rank_info?.tier ?? '']}>{r.rank_info?.name}</td>
+                  <td className="tbl-td max-w-18">
+                    <RankImage rankInfo={r.rank_info} className="h-6 w-auto" />
+                  </td>
                   <td className="tbl-td">
                     <span className={`flex items-center justify-center ${inGame ? 'text-green-400' : 'text-yellow-400'}`} title={inGame ? '게임 중' : '찾는 중'} aria-label={inGame ? '게임 중' : '찾는 중'}>
                       {inGame ? IconGamepad : IconSearch}

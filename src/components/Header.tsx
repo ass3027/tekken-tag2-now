@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { charImageUrl } from '@/shared/characterImage'
 import type { LeaderboardEntry } from '@/types'
-import { TIER_STYLES } from '@/shared/tierColors'
+import RankImage from './RankImage'
 
 const LS_KEY = 'ttt2-username'
 
@@ -93,9 +93,7 @@ export default function Header({ totalUsers, leaderboardEntries }: HeaderProps) 
                   {[mainChar, subChar].map(char => char &&
                     <div key={char.name} className="flex items-center">
                       {char.rank_info && (
-                        <span className="hidden sm:inline w-2/3 text-lg font-bold" style={TIER_STYLES[char.rank_info.tier]}>
-                          {char.rank_info.name}
-                        </span>
+                        <RankImage rankInfo={char.rank_info} className="hidden sm:inline w-2/3 h-auto" />
                       )}
                       <img src={charImageUrl(char.name)!} alt={char.name} className="w-7 h-7 rounded" />
                       <div className="flex flex-col items-start font-semibold">

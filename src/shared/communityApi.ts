@@ -13,8 +13,8 @@ export const fetchPosts = (page: number, pageSize: number, postType?: string): P
 export const fetchPostDetail = (postId: number): Promise<PostDetail> =>
   GET(`community/posts/${postId}`)
 
-export const createPost = (body: string, postType: string) =>
-  POST('community/posts', { body, post_type: postType })
+export const createPost = (title: string, body: string, postType: string) =>
+  POST('community/posts', { title, body, post_type: postType })
 
 export const deletePost = (postId: number) =>
   DELETE(`community/posts/${postId}`)

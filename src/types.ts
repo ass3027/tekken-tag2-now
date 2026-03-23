@@ -58,6 +58,7 @@ export interface RoomsData {
 export interface PostSummary {
   id: number
   author: string
+  title: string
   body: string
   post_type: string
   thumbs_up: number
@@ -86,6 +87,7 @@ export interface CommentOut {
 export interface PostDetail {
   id: number
   author: string
+  title: string
   body: string
   post_type: string
   thumbs_up: number

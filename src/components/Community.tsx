@@ -36,9 +36,9 @@ export default function Community() {
     community.loadPosts(page, postType || undefined)
   }
 
-  const handleCreatePost = async (body: string, type: string) => {
+  const handleCreatePost = async (title: string, body: string, type: string) => {
     await ensureIdentity()
-    await createPost(body, type)
+    await createPost(title, body, type)
     setView('list')
     community.loadPosts(1, postType || undefined)
   }

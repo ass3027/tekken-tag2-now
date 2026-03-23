@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { relativeTime } from '@/shared/timeFormat'
 import { thumbPost, createComment, deletePost } from '@/shared/communityApi'
+import { charImageUrl } from '@/shared/characterImage'
 import CommentTree from './CommentTree'
 import type { PostDetail as PostDetailType } from '@/types'
 
@@ -67,9 +68,13 @@ export default function PostDetail({ post, username, onBack, onRefresh, ensureId
 
       <div className="mb-4">
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-[0.75rem] font-bold uppercase tracking-wider px-2 py-0.5 bg-primary-dim text-primary rounded">
-            {post.post_type}
-          </span>
+          {charImageUrl(post.post_type) ? (
+            <img src={charImageUrl(post.post_type)!} alt={post.post_type} className="h-6 w-6 object-cover rounded" title={post.post_type} />
+          ) : (
+            <span className="text-[0.75rem] font-bold uppercase tracking-wider px-2 py-0.5 bg-primary-dim text-primary rounded">
+              {post.post_type}
+            </span>
+          )}
           <span className="text-[0.8rem] text-txt-dim">{relativeTime(post.created_at)}</span>
           {username && post.author === username && (
             <button
@@ -81,6 +86,7 @@ export default function PostDetail({ post, username, onBack, onRefresh, ensureId
           )}
         </div>
         <p className="text-[0.8rem] font-bold text-primary mb-2">{post.author}</p>
+        <h3 className="m-0 mb-2 text-[1.1rem] font-bold text-white">{post.title}</h3>
         <p className="m-0 text-[0.95rem] text-txt whitespace-pre-wrap break-words">{post.body}</p>
       </div>
 

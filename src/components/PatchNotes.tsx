@@ -5,6 +5,12 @@ const LS_KEY = 'ttt2-patch-dismissed'
 
 const NOTES: { version: string; items: string[] }[] = [
   {
+    version: '1.0.6',
+    items: [
+      '커뮤니티 게시판 추가 (글쓰기, 댓글, 추천/비추천, 현재는 단순 텍스트만 가능)',
+    ],
+  },
+  {
     version: '1.0.5',
     items: [
       '랭크 이미지 추가',

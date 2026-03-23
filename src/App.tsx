@@ -3,6 +3,7 @@ import Leaderboard from './components/Leaderboard'
 import Rooms from './components/Rooms'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import PatchNotes from './components/PatchNotes'
 import { GROUP_ORDER, formatGroupName } from './tabConfig'
 import useLeaderboard from './hooks/useLeaderboard'
 import useRooms from './hooks/useRooms'
@@ -35,6 +36,7 @@ export default function App() {
 
   return (
     <div className="mx-auto max-w-240 pb-12">
+      <PatchNotes />
       <Header totalUsers={rooms.data?.totalUsers} leaderboardEntries={lb.data?.entries} />
 
       <nav className="flex items-end flex-nowrap gap-0.5 mt-5 border-b border-border-light pb-0 overflow-x-auto overflow-y-hidden whitespace-nowrap">

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { charImageUrl } from '@/shared/characterImage'
+import { APP_VERSION } from '@/version'
 import type { LeaderboardEntry } from '@/types'
 import RankImage from './RankImage'
 
@@ -50,7 +51,7 @@ export default function Header({ totalUsers, leaderboardEntries }: HeaderProps) 
           <h1 className="font-display text-[clamp(1.05rem,4vw,1.8rem)] font-black m-0 tracking-wide uppercase">
             Tag<span className="header-accent">2</span>Now
           </h1>
-          <span className="absolute top-[76%] right-[4%]">v1.0.5</span>
+          <span className="absolute top-[76%] right-[4%]">v{APP_VERSION}</span>
         </div>
         <div className="inline-flex items-center flex-col sm:flex-row sm:gap-2 text-[0.95rem] font-bold">
           <div className="inline-flex items-center gap-1.5 tracking-[0.2em] uppercase text-red-500">

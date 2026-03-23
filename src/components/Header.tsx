@@ -96,7 +96,7 @@ export default function Header({ totalUsers, leaderboardEntries }: HeaderProps) 
                   {[mainChar, subChar].map(char => char &&
                     <div key={char.name} className="flex items-center">
                       {char.rank_info && (
-                        <RankImage rankInfo={char.rank_info} className="hidden sm:inline w-1/3 h-auto" />
+                        <RankImage rankInfo={char.rank_info} className="hidden sm:inline h-11 w-auto" />
                       )}
                       <img src={charImageUrl(char.name)!} alt={char.name} className="w-11 h-11 rounded" />
                       <div className="flex flex-col items-start font-semibold">

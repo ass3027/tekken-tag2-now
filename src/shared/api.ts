@@ -7,8 +7,8 @@ declare global {
 const BASE = window.__ENV__?.API_BASE ?? '/api'
 
 export const request = async (path: string, option: RequestInit) => {
-    const res = await fetch(`${BASE}/${path}`, option);
-    if (!res.ok) throw new Error(`request failed: ${res.body}`)
+    const res = await fetch(`${BASE}/${path}`, { credentials: 'include', ...option });
+    if (!res.ok) throw new Error(`request failed: ${res.status}`)
     return res.json()
 }
 
@@ -18,5 +18,14 @@ export const GET = async (path: string, params?: any) => {
 }
 
 export const POST = async (path: string, data: any) => {
-    return await request('path', { method: 'POST', body: JSON.stringify(data) })
+    return await request(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+    })
+}
+
+export const DELETE = async (path: string) => {
+    const res = await fetch(`${BASE}/${path}`, { credentials: 'include', method: 'DELETE' });
+    if (!res.ok) throw new Error(`request failed: ${res.status}`)
 }

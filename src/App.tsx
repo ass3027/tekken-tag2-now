@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import Leaderboard from './components/Leaderboard'
 import Rooms from './components/Rooms'
+import Community from './components/Community'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import PatchNotes from './components/PatchNotes'
@@ -22,13 +23,14 @@ export default function App() {
 
   const tabs = useMemo(
     () => [...groupKeys.map((k) => ({ key: k, label: `${formatGroupName(k)} (${groups[k].length})` })),
-           { key: 'leaderboard', label: 'Leaderboard' }],
+           { key: 'leaderboard', label: 'Leaderboard' },
+           { key: 'community', label: '커뮤니티' }],
     [groupKeys, groups],
   )
 
   // Default to first room group tab, or leaderboard if no groups
   const activeTab = tab && tabs.some((t) => t.key === tab) ? tab : tabs[0]?.key ?? 'leaderboard'
-  const isRoomTab = activeTab !== 'leaderboard'
+  const isRoomTab = activeTab !== 'leaderboard' && activeTab !== 'community'
 
   const activeRoomsData = isRoomTab
     ? { rooms: groups[activeTab] ?? [] }
@@ -66,6 +68,7 @@ export default function App() {
           <Rooms data={null} loading={rooms.loading} error={rooms.error} onRefresh={rooms.refresh} />
         )}
         {activeTab === 'leaderboard' && <Leaderboard data={lb.data} loading={lb.loading} refreshing={lb.refreshing} error={lb.error} onRefresh={lb.refresh} />}
+        {activeTab === 'community' && <Community />}
       </div>
 
       <Footer />

@@ -13,16 +13,10 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        // target: 'http://localhost:8000',
-        target: 'https://tag2now.click:8000',
+        target: process.env.BE === 'local' ? 'http://localhost:8000' : 'https://tag2now.click:8000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
-  // test: {
-  //   environment: 'jsdom',
-  //   globals: true,
-  //   setupFiles: ['./src/test/setup.ts'],
-  // },
 })

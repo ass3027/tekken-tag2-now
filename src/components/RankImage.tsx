@@ -9,7 +9,7 @@ export default function RankImage({ rankInfo, className }: RankImageProps) {
   if (!rankInfo?.name) return null
   return (
     <img
-      src={`/ranks/${rankInfo.name.replaceAll(" ", "_")}.png`}
+      src={`/ranks/${rankInfo.name.replace(" ", "_")}.png`}
       alt={rankInfo.name}
       title={rankInfo.name}
       className={className}

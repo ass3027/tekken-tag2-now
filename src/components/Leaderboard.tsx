@@ -20,7 +20,7 @@ function CharCell({ name, rankInfo, wins, losses }: CharCellProps) {
     <td className="char-td">
       <div className="flex flex-col sm:flex-row items-center sm:justify-center gap-1 sm:gap-2 sm:w-auto mx-auto">
         <div className="flex flex-1 justify-center flex-col sm:flex-row items-center gap-1">
-          <RankImage rankInfo={rankInfo} className="char-rank sm:max-w-none w-6/10 sm:w-3/10 h-auto" />
+          <RankImage rankInfo={rankInfo} className="char-rank sm:max-w-none w-6/10 sm:w-5/20 h-auto" />
           {url && <img src={url} alt={name} className="w-13 h-13 sm:w-15 sm:h-15 object-contain" />}
         {winRate != null && (
             <div className="hidden w-3/10 sm:block text-[1rem] leading-tight whitespace-nowrap text-left">

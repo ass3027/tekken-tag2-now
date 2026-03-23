@@ -1,7 +1,6 @@
 import { relativeTime } from '@/shared/timeFormat'
+import { CHARACTER_NAMES, CHARACTER_GRID, charImageUrl } from '@/shared/characterImage'
 import type { PostSummary } from '@/types'
-
-const POST_TYPE_FILTERS = ['all', 'free', 'info', 'question', 'media'] as const
 
 interface PostListProps {
   posts: PostSummary[]
@@ -25,28 +24,50 @@ export default function PostList({
 
   return (
     <div className="p-4">
-      <div className="flex items-center flex-wrap gap-2 mb-4">
-        <div className="flex gap-1">
-          {POST_TYPE_FILTERS.map((t) => (
+      <div className="flex items-center gap-2 mb-3">
+        {['all', '자유', '랭매구인'].map((t) => {
+          const active = (t === 'all' && !postType) || postType === t
+          return (
             <button
               key={t}
               onClick={() => onPostTypeChange(t === 'all' ? '' : t)}
               className={`px-3 py-1 text-[0.78rem] font-bold uppercase tracking-wider border rounded cursor-pointer transition-colors ${
-                (t === 'all' && !postType) || postType === t
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-transparent text-txt-dim border-border-light hover:text-txt'
+                active ? 'bg-primary text-white border-primary' : 'bg-transparent text-txt-dim border-border-light hover:text-txt'
               }`}
             >
               {t === 'all' ? '전체' : t}
             </button>
-          ))}
-        </div>
+          )
+        })}
         <button
           onClick={onWrite}
           className="ml-auto px-3 py-1 bg-secondary text-bg-deep text-[0.8rem] font-bold uppercase tracking-wider border-0 rounded cursor-pointer hover:bg-secondary-light"
         >
           글쓰기
         </button>
+      </div>
+
+      <div className="mb-4">
+        {CHARACTER_GRID.map((row, ri) => (
+          <div key={ri} className="flex gap-0.5 mb-0.5">
+            {row.map((name) => {
+              const active = postType === name
+              const url = charImageUrl(name)
+              return (
+                <button
+                  key={name}
+                  onClick={() => onPostTypeChange(active ? '' : name)}
+                  className={`w-1/23 h-9 p-0 border rounded cursor-pointer transition-all ${
+                    url && active ? 'border-primary shadow-[0_0_6px_var(--color-primary-glow)]' : 'border-transparent hover:border-primary-dim'
+                  } ${url && 'disabled'}`}
+                  title={name}
+                >
+                  {url && <img src={url} alt={name} className={`h-full object-cover rounded block ${active ? '' : 'opacity-60 hover:opacity-100'}`} />}
+                </button>
+              )
+            })}
+          </div>
+        ))}
       </div>
 
       {loading && <p className="state-msg">Loading...</p>}
@@ -62,23 +83,27 @@ export default function PostList({
             <button
               key={post.id}
               onClick={() => onSelectPost(post.id)}
-              className="w-full text-left bg-bg-row border border-border rounded p-3 cursor-pointer transition-colors hover:bg-[rgba(0,200,212,0.07)] hover:border-primary-dim"
+              className="w-full text-left bg-bg-row border border-border rounded px-3 py-2 cursor-pointer transition-colors hover:bg-[rgba(0,200,212,0.07)] hover:border-primary-dim flex items-center gap-2"
             >
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[0.7rem] font-bold uppercase tracking-wider px-1.5 py-0.5 bg-primary-dim text-primary rounded">
-                  {post.post_type}
-                </span>
-                <span className="text-[0.78rem] font-bold text-primary">{post.author}</span>
-                <span className="text-[0.75rem] text-txt-dim">{relativeTime(post.created_at)}</span>
-              </div>
-              <p className="m-0 text-[0.9rem] text-txt overflow-hidden text-ellipsis whitespace-nowrap">
-                {post.body}
-              </p>
-              <div className="flex gap-3 mt-1.5 text-[0.75rem] text-txt-dim">
+              <span className="w-14 shrink-0 flex items-center justify-center">
+                {charImageUrl(post.post_type) ? (
+                  <img src={charImageUrl(post.post_type)!} alt={post.post_type} className="h-5 w-5 object-cover rounded" title={post.post_type} />
+                ) : (
+                  <span className="text-[0.7rem] font-bold uppercase tracking-wider px-1.5 py-0.5 bg-primary-dim text-primary rounded truncate max-w-full text-center">
+                    {post.post_type}
+                  </span>
+                )}
+              </span>
+              <span className="flex-1 min-w-0 text-[0.9rem] text-white font-bold truncate">
+                {post.title}
+              </span>
+              <span className="text-[0.78rem] font-bold text-primary shrink-0">{post.author}</span>
+              <span className="flex gap-2 text-[0.75rem] text-txt-dim shrink-0">
                 <span>&#9650; {post.thumbs_up}</span>
                 <span>&#9660; {post.thumbs_down}</span>
                 <span>&#128172; {post.comment_count}</span>
-              </div>
+              </span>
+              <span className="text-[0.75rem] text-txt-dim shrink-0">{relativeTime(post.created_at)}</span>
             </button>
           ))}
         </div>
